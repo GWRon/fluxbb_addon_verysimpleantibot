@@ -25,10 +25,8 @@ $lang_addon_admin_vsab = array(
 
 global $addon_vsab_questions;
 $addon_vsab_questions = array(
-  'Gib die fehlenden Buchstaben an: g**ezworld.de'	=> "am",
-  'Gib die fehlenden Buchstaben an: ga**zworld.de'	=> "me",
-  'Gib die fehlenden Buchstaben an: gamez**rld.de'	=> "wo",
-  'Gib die fehlenden Buchstaben an: gamezw**ld.de'	=> "rl",
+  'Gib die fehlenden Buchstaben an: ex**ple.com'	=> "am",
+  'Gib die fehlenden Buchstaben an: exam**e.com'	=> "pl",
   'Wie lautet das vierte Wort in dieser Frage?'		=> "vierte",
   'Wie lautet das sechste Wort in dieser Frage?'	=> "in",
   'Gib die fehlenden Buchstaben an: Bist du ein Mensch oder ein Comp**er?'	=> "ut",

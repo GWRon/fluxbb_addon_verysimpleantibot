@@ -25,10 +25,8 @@ $lang_addon_admin_vsab = array(
 
 global $addon_vsab_questions;
 $addon_vsab_questions = array(
-  'Fill in the missing letters: g**ezworld.de' => "am",
-  'Fill in the missing letters: ga**zworld.de' => "me",
-  'Fill in the missing letters: gamez**rld.de' => "wo",
-  'Fill in the missing letters: gamezw**ld.de' => "rl",
+  'Fill in the missing letters: ex**ple.com' => "am",
+  'Fill in the missing letters: exam**e.com' => "pl",
   'What is the fourth word of this question?' => "fourth",
   'What is the fifth word of this question?' => "word",
   'Fill in the missing letters: Are you a human or a comp**er??'    => "ut",
