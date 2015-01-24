@@ -17,8 +17,8 @@
  * http://fluxbb.org/resources/mods/very-simple-anti-bot-registration
  * 
  * 
- * initial release :      2015/01/25
- * latest modification :  2015/01/25
+ * initial release :      2015/01/24
+ * latest modification :  2015/01/24
  * licence:               zlib (zlib/Libpng)
  *                        http://opensource.org/licenses/Zlib
  * authors:               GWRon (Ronny Otto)
