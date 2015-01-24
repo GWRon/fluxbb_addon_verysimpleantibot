@@ -8,9 +8,11 @@ Requires Fluxbb v1.5.8+ because it utilizes the newly introduced hook system to 
 
 ## Installation
 
-1. Upload `plugins/AP_VerySimpleAntiBot.php`.
-2. Upload `addons/verysimpleantibot.php`.
-3. Open the language files in `langs` and edit the questions contained in the file `addon_verysimpleantibot.php`. It is possible to use individual questions for each language. This allows pun/website specific questions to increase difficulty for foreign spammers.
+1. Open the language files in `langs` and edit the questions contained in the file `addon_verysimpleantibot.php`. It is possible to use individual questions for each language. This allows pun/website specific questions to increase difficulty for foreign spammers.
+
+2. Upload `plugins/AP_VerySimpleAntiBot.php`.
+3. Upload `addons/verysimpleantibot.php`.
+4. Upload the individual language files of the language directory `lang`
 
 ## Configuration
 
