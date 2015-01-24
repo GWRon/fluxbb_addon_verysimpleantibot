@@ -30,7 +30,7 @@ $addon_vsab_questions = array(
   'Wie lautet das vierte Wort in dieser Frage?'		=> "vierte",
   'Wie lautet das sechste Wort in dieser Frage?'	=> "in",
   'Gib die fehlenden Buchstaben an: Bist du ein Mensch oder ein Comp**er?'	=> "ut",
-  'Gib die fehlenden Buchstaben an: Bist du ein Mensch oder ein C**puter??'	=> "om"
+  'Gib die fehlenden Buchstaben an: Bist du ein Mensch oder ein C**puter??'	=> "om",
 );
 
 ?>

@@ -30,7 +30,7 @@ $addon_vsab_questions = array(
   'What is the fourth word of this question?' => "fourth",
   'What is the fifth word of this question?' => "word",
   'Fill in the missing letters: Are you a human or a comp**er??'    => "ut",
-  'Fill in the missing letters: Are you a human or a c**puter??'    => "om"
+  'Fill in the missing letters: Are you a human or a c**puter??'    => "om",
 );
 
 ?>
