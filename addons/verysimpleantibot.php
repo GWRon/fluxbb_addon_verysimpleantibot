@@ -262,7 +262,7 @@ class addon_verysimpleantibot extends flux_addon
 						<strong><?php echo sprintf($lang_addon_vsab['question'], $this->get_chosen_question()) ?></strong>
 						<br />
 						<strong><?php echo $lang_common['Required'] ?></strong>
-						 <input name="vsab_question" value="<?php echo	$this->get_chosen_question_hash ?>" type="hidden" />
+						 <input name="vsab_question" value="<?php echo $this->get_chosen_question_hash() ?>" type="hidden" />
 						 <input	name="vsab_answer" id="vsab_answer" type="text" size="10" maxlength="30" />
 						 <br />
 					</label>
