@@ -115,6 +115,9 @@ class addon_verysimpleantibot extends flux_addon
     {
 		if (!$this->have_to_check_user('registration'))
 			return;
+
+		//load language file
+		$this->load_language_and_questions();
 			
 		global $required_fields, $lang_addon_vsab;
 		$required_fields['vsab_answer'] = $lang_addon_vsab['title'];
