@@ -66,27 +66,27 @@ class addon_verysimpleantibot extends flux_addon
 	//append the captcha as required field
     function hook_post_before_header()
     {
-		if (!$this->have_to_check_user("posting"))
+		if (!$this->have_to_check_user('posting'))
 			return;
 			
 		global $required_fields, $lang_addon_vsab;
-		$required_fields['captcha'] = $lang_addon_vsab['title'];
+		$required_fields['vsab_answer'] = $lang_addon_vsab['title'];
 	}
 
 	//append the captcha/question to the post form
     function hook_post_before_submit()
     {
-		if (!$this->have_to_check_user("posting"))
+		if (!$this->have_to_check_user('posting'))
 			return;
 
-		$this->output_captcha_box();
+		$this->output_captcha_box('posting');
 	}
     
 	//validate the captcha before other validations take place
     function hook_post_before_validation()
     {
 		//only validate checks if needed 
-		if(!$this->have_to_check_user("posting"))
+		if(!$this->have_to_check_user('posting'))
 			return;
 
 		//just previewing the post - skip validation check
@@ -113,20 +113,20 @@ class addon_verysimpleantibot extends flux_addon
 	//append the captcha as required field
     function hook_register_before_header()
     {
-		if (!$this->have_to_check_user("registration"))
+		if (!$this->have_to_check_user('registration'))
 			return;
 			
 		global $required_fields, $lang_addon_vsab;
-		$required_fields['captcha'] = $lang_addon_vsab['title'];
+		$required_fields['vsab_answer'] = $lang_addon_vsab['title'];
 	}
 
 	//append the captcha/question to the registration form
     function hook_register_before_submit()
     {
-		if (!$this->have_to_check_user("registration"))
+		if (!$this->have_to_check_user('registration'))
 			return;
 
-		$this->output_captcha_box();
+		$this->output_captcha_box('registration');
 	}
 		
     function hook_register_before_validation()
@@ -140,7 +140,7 @@ class addon_verysimpleantibot extends flux_addon
 		}
 
 		//only validate checks if needed 
-		if(!$this->have_to_check_user("registration"))
+		if(!$this->have_to_check_user('registration'))
 			return;
 
 		//load questions if needed and validate answers
@@ -160,7 +160,7 @@ class addon_verysimpleantibot extends flux_addon
 
 	// === HELPER FUNCTIONS ===
 
-    function load_language_and_questions()
+	function load_language_and_questions()
     {
 		if($this->language_file_loaded)
 			return false;
@@ -235,12 +235,13 @@ class addon_verysimpleantibot extends flux_addon
 					return true;
 				else
 					return false;
+		
 		//fail if the hash was invalid (outdated or manipulated)
 		return false;
 	}
 
 
-	function output_captcha_box()
+	function output_captcha_box($action = '')
 	{
 
 		//load the language file (if not done yet)
@@ -262,9 +263,12 @@ class addon_verysimpleantibot extends flux_addon
 						<strong><?php echo sprintf($lang_addon_vsab['question'], $this->get_chosen_question()) ?></strong>
 						<br />
 						<strong><?php echo $lang_common['Required'] ?></strong>
-						 <input name="vsab_question" value="<?php echo	$this->get_chosen_question_hash() ?>" type="hidden" />
-						 <input	name="vsab_answer" id="vsab_answer" type="text" size="10" maxlength="30" />
-						 <br />
+						<input name="vsab_question" value="<?php echo	$this->get_chosen_question_hash() ?>" type="hidden" />
+						<input name="vsab_answer" id="vsab_answer" type="text" size="10" maxlength="30" />
+<?php if (isset($action) && $action == 'registration') : ?>
+						<input type="hidden" name="username" value="" />
+<?php endif; ?>
+						<br />
 					</label>
 				</div>
 			</fieldset>
@@ -273,7 +277,7 @@ class addon_verysimpleantibot extends flux_addon
 	}		
 	
 	//skip checking if not needed for the given action
-	function have_to_check_user($action)
+	function have_to_check_user($action = '')
 	{
 		global $pun_config, $pun_user;
 
@@ -281,7 +285,7 @@ class addon_verysimpleantibot extends flux_addon
         //addon disabled
 		if ($pun_config['vsab_enabled']=='no') return false;
 
-		if ($action == "posting")
+		if ($action == 'posting')
 		{
 			//addon disabled for postings
 			if ($pun_config['vsab_enabled_postings']=='no') return false;
