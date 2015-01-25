@@ -6,6 +6,8 @@ An addon for the bulletin board software __Fluxbb__.
 
 Requires Fluxbb v1.5.8+ because it utilizes the newly introduced hook system to ease the integration process.
 
+VerySimpleAntiBot does __not__ require JavaScript.
+
 ## Installation
 
 1. Open the language files in `langs` and edit the questions contained in the file `YOURLANG/addon_verysimpleantibot.php`. It is possible to use individual questions for each language. This allows pun/website specific questions to increase difficulty for foreign spammers.
