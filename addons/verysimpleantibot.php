@@ -78,7 +78,7 @@ class addon_verysimpleantibot extends flux_addon
 		if (empty($pun_config['vsab_enabled'])) return false;
 		if (empty($pun_config['vsab_enabled_postings'])) return false;
 		if (empty($pun_config['vsab_salt'])) return false;
-		if (isset($pun_config['vsab_minimum_posts_to_skip'])) return false;
+		if (!isset($pun_config['vsab_minimum_posts_to_skip'])) return false;
 		return true;
 	}
 
