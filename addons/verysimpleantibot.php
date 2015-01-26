@@ -31,7 +31,9 @@ class addon_verysimpleantibot extends flux_addon
 	public $chosen_question_index = -1;
 	public $chosen_question_hash = "";
 	public $chosen_question = "";
-	
+
+	//register to all hooks the addon is interested in
+	//function is auto-called by the addon-system during boostrapping
     function register($manager)
     {
         if ($this->is_configured())
@@ -54,6 +56,7 @@ class addon_verysimpleantibot extends flux_addon
         }
     }
 
+	//check if all needed configuration values are available
     function is_configured()
     {
         global $pun_config;
@@ -136,7 +139,9 @@ class addon_verysimpleantibot extends flux_addon
 
 		$this->output_captcha_box('registration');
 	}
-		
+
+	//validate the captcha before other validations take place
+	//also checks if a hidden fake-username-input-field was populated
     function hook_register_before_validation()
 	{
 		//if the hidden field username contains something, then it was
@@ -168,6 +173,8 @@ class addon_verysimpleantibot extends flux_addon
 
 	// === HELPER FUNCTIONS ===
 
+	//load a languagefile corresponding to the current user
+	//loading is skipped if already done 
 	function load_language_and_questions()
     {
 		if($this->language_file_loaded)
@@ -181,6 +188,8 @@ class addon_verysimpleantibot extends flux_addon
 			require PUN_ROOT.'lang/English/addon_verysimpleantibot.php';
 	}
 
+	//return the index of the currently chosen question
+	//selects a question if not done yet
 	function get_chosen_question_index()
 	{
 		if ($this->chosen_question_index < 0)
@@ -188,6 +197,8 @@ class addon_verysimpleantibot extends flux_addon
 		return $this->chosen_question_index;
 	}
 
+	//return the hash of the currently chosen question
+	//selects a question if not done yet
 	function get_chosen_question_hash()
 	{
 		if ($this->chosen_question_hash == '')
@@ -195,6 +206,8 @@ class addon_verysimpleantibot extends flux_addon
 		return $this->chosen_question_hash;
 	}
 
+	//return the text of the currently chosen question
+	//selects a question if not done yet
 	function get_chosen_question()
 	{
 		if ($this->chosen_question == '')
@@ -202,6 +215,8 @@ class addon_verysimpleantibot extends flux_addon
 		return $this->chosen_question;
 	}
 
+	//select and store question data out of the language file
+	//corresponding to the current user
 	function do_choose_question()
 	{
 		if (!$this->language_file_loaded)
@@ -223,6 +238,10 @@ class addon_verysimpleantibot extends flux_addon
 		return false;
 	}
 
+	//verify the given answer with the answer linkes to the also
+	//provided hash of a question
+	//The function returns TRUE if the answer was correct OR no valid
+	//questions are defined at all.
 	function verify_question_answer($question_hash, $question_answer)
 	{
 		if($question_hash == "" || $question_answer == "")
@@ -236,7 +255,6 @@ class addon_verysimpleantibot extends flux_addon
 		if(!isset($addon_vsab_questions) || count($addon_vsab_questions) == 0)
 			return true;
 
-		$questions = array();
 		foreach ($addon_vsab_questions as $key=>$value)
 			if (md5($key) == $question_hash)
 				if ($value == $question_answer)
@@ -249,6 +267,7 @@ class addon_verysimpleantibot extends flux_addon
 	}
 
 
+	//prints out the html code containing the captcha/question markup
 	function output_captcha_box($action = '')
 	{
 
@@ -273,7 +292,7 @@ class addon_verysimpleantibot extends flux_addon
 						<strong><?php echo $lang_common['Required'] ?></strong>
 						<input name="vsab_question" value="<?php echo	$this->get_chosen_question_hash() ?>" type="hidden" />
 						<input name="vsab_answer" id="vsab_answer" type="text" size="10" maxlength="30" />
-<?php if (isset($action) && $action == 'registration') : ?>
+<?php if ($action == 'registration') : ?>
 						<input type="hidden" name="username" value="" />
 <?php endif; ?>
 						<br />
