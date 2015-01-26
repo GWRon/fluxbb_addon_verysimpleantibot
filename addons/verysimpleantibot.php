@@ -373,7 +373,7 @@ class addon_verysimpleantibot extends flux_addon
 
 						//could members skip validation if they reached
 						//a specific post count?
-						if ($pun_config['vsab_minimum_posts_to_skip'] > 0))
+						if ($pun_config['vsab_minimum_posts_to_skip'] > 0)
 							if ($pun_user['num_posts'] >= $pun_config['vsab_minimum_posts_to_skip'])
 								return false;
 								
