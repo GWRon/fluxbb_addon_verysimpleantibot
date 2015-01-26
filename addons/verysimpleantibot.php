@@ -41,6 +41,10 @@ class addon_verysimpleantibot extends flux_addon
 	{
 		if ($this->is_configured())
 		{
+			//Annotation by GWRon
+			//TODO: to add the required field for quickposts new hooks
+			//      are needed ("topic_before_header")
+			 
 
 			if ($this->have_to_check_user("registration"))
 			{
@@ -269,7 +273,7 @@ class addon_verysimpleantibot extends flux_addon
 			return true;
 
 		foreach ($addon_vsab_questions as $key=>$value)
-			if ($this->create_hash($key) == $question_hash)
+			if ($this->is_valid_hash($question_hash, $key))
 				if ($value == $question_answer)
 					return true;
 				else
@@ -286,8 +290,22 @@ class addon_verysimpleantibot extends flux_addon
 	//the same text. 
 	function create_hash($text)
 	{
-		global $pun_config, $pun_user;
+		global $pun_config;
 		return md5($text . date('dmY') . $pun_config['vsab_salt']);
+	}
+
+	//returns whether a given hash is valid for the hash of the given
+	//text in the current or the previous hour
+	//this removes the problem of an invalid hash and shortens the
+	//validity of a hash to 2 hours
+	function is_valid_hash($hash, $text)
+	{
+		global $pun_config;
+		//check current hour hash
+		if($hash == md5($text . date('dmY') . $pun_config['vsab_salt']))
+			return true;
+		//check previous hour hash
+		return ($hash == md5($text . date('dmY', strtotime('-1 hour')) . $pun_config['vsab_salt']));
 	}
 
 	//prints out the html code containing the captcha/question markup
