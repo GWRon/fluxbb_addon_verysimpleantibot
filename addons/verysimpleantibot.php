@@ -204,6 +204,8 @@ class addon_verysimpleantibot extends flux_addon
 			require PUN_ROOT.'lang/'.$pun_user['language'].'/addon_verysimpleantibot.php';
 		else
 			require PUN_ROOT.'lang/English/addon_verysimpleantibot.php';
+
+		$this->language_file_loaded = true;
 	}
 
 	//return the index of the currently chosen question
