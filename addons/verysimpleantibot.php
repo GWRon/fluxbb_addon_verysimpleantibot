@@ -240,8 +240,8 @@ class addon_verysimpleantibot extends flux_addon
 	//corresponding to the current user
 	function do_choose_question()
 	{
-		if (!$this->language_file_loaded)
-			$this->load_language_and_questions();
+		//load the language file (if not done yet)
+		$this->load_language_and_questions();
 
 		//check availability of questions
 		global $addon_vsab_questions;
@@ -268,8 +268,8 @@ class addon_verysimpleantibot extends flux_addon
 		if($question_hash == "" || $question_answer == "")
 			return false;
 
-		if (!$this->language_file_loaded)
-			$this->load_language_and_questions();
+		//load the language file (if not done yet)
+		$this->load_language_and_questions();
 
 		global $addon_vsab_questions;
 		// if no questions are defined, validation is always successful 
