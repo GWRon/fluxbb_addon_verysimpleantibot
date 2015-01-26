@@ -288,14 +288,14 @@ class addon_verysimpleantibot extends flux_addon
 	}
 
 	//return a salted hash for the given text
-	//the salt contains the current day, so if the hash is created
-	//a bit before midnight and validated later on, it will FAIL!
-	//But using this avoids having a constant hash for requests with
-	//the same text. 
+	//the salt contains the current hour, so if the hash is created
+	//at 8:59  and validated at 9:01, a direct comparison of the hashes
+	//will FAIL!
+	//To avoid this, compare hashes using "is_valid_hash()"
 	function create_hash($text)
 	{
 		global $pun_config;
-		return md5($text . date('dmY') . $pun_config['vsab_salt']);
+		return md5($text . date('dmYH') . $pun_config['vsab_salt']);
 	}
 
 	//returns whether a given hash is valid for the hash of the given
@@ -306,10 +306,10 @@ class addon_verysimpleantibot extends flux_addon
 	{
 		global $pun_config;
 		//check current hour hash
-		if($hash == md5($text . date('dmY') . $pun_config['vsab_salt']))
+		if($hash == md5($text . date('dmYH') . $pun_config['vsab_salt']))
 			return true;
 		//check previous hour hash
-		return ($hash == md5($text . date('dmY', strtotime('-1 hour')) . $pun_config['vsab_salt']));
+		return ($hash == md5($text . date('dmYH', strtotime('-1 hour')) . $pun_config['vsab_salt']));
 	}
 
 	//prints out the html code containing the captcha/question markup
