@@ -20,6 +20,10 @@ $lang_addon_admin_vsab = array(
   'AP description' => 'Einstellungen entsprechend Deiner Wünsche anpassen.',
   'Enabled' => 'Aktiviert',
   'Enabled for postings' => 'Für Beiträge aktiviert',
+  'Yes for all' => 'Ja für Alle',
+  'Yes for guests' => 'Ja für Gäste',
+  'Encryption salt' => 'Verschlüsselungs-Code',
+  'Leave empty to autogenerate a new salt' => 'Freilassen um einen neuen Code generieren zu lassen',
 );
 
 

@@ -18,14 +18,11 @@
  * 
  * 
  * initial release :      2015/01/24
- * latest modification :  2015/01/24
+ * latest modification :  2015/01/26
  * licence:               zlib (zlib/Libpng)
  *                        http://opensource.org/licenses/Zlib
  * authors:               GWRon (Ronny Otto)
  */
-
-// GWRon: I used "select boxes" for the options to allow to extend the
-//        options more easily ("just guests", "guests and users", "none").
 
 
 // Make sure no one attempts to run this script "directly"
@@ -41,6 +38,10 @@ if (isset($_POST['process_form']))
 {
     $conf['enabled'] = isset($_POST['vsab_enabled']) ? pun_trim($_POST['vsab_enabled']) : "no";
     $conf['enabled_postings'] = isset($_POST['vsab_enabled_postings']) ? pun_trim($_POST['vsab_enabled_postings']) : "no";
+    $conf['salt'] = isset($_POST['vsab_salt']) ? pun_trim($_POST['vsab_salt']) : "";
+
+	//repair salt if empty one was provided
+	if($conf['salt'] == "") $conf['salt'] = uniqid();
 
     foreach ($conf as $key => $value)
     {
@@ -100,9 +101,17 @@ if(!isset($pun_config['vsab_enabled_postings'])) $pun_config['vsab_enabled_posti
                                 <th scope="row"><?php echo $lang_addon_admin_vsab['Enabled for postings'] ?></th>
                                 <td style="width:75%;">
 									<select name="vsab_enabled_postings">
-										<option value="yes" <?php if ($pun_config['vsab_enabled_postings'] == 'yes') echo "selected"; ?>><?php echo $lang_admin_common['Yes'] ?></option>
-										<option value="no" <?php if ($pun_config['vsab_enabled_postings'] != 'yes') echo "selected"; ?>><?php echo $lang_admin_common['No'] ?></option>
+										<option value="yes_for_all" <?php if ($pun_config['vsab_enabled_postings'] == 'yes_for_all') echo "selected"; ?>><?php echo $lang_addon_admin_vsab['Yes for all'] ?></option>
+										<option value="yes_for_guests" <?php if ($pun_config['vsab_enabled_postings'] == 'yes_for_guests') echo "selected"; ?>><?php echo $lang_addon_admin_vsab['Yes for guests'] ?></option>
+										<option value="no" <?php if (stripos($pun_config['vsab_enabled_postings'], 'yes_') === false) echo "selected"; ?>><?php echo $lang_admin_common['No'] ?></option>
 									</select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php echo $lang_addon_admin_vsab['Encryption salt'] ?></th>
+                                <td>
+                                    <input type="text" name="vsab_salt" size="40" value="<?php if (!empty($pun_config['vsab_salt'])) echo pun_htmlspecialchars($pun_config['vsab_salt']); ?>" />
+                                    <br /><i><?php echo $lang_addon_admin_vsab['Leave empty to autogenerate a new salt'] ?></i>
                                 </td>
                             </tr>
                         </table>

@@ -18,12 +18,15 @@
  * 
  * 
  * initial release :      2015/01/24
- * latest modification :  2015/01/24
+ * latest modification :  2015/01/26
  * licence:               zlib (zlib/Libpng)
  *                        http://opensource.org/licenses/Zlib
  * authors:               GWRon (Ronny Otto)
  */
 
+// NOTE: currently "have_to_check_user()" is called multiple times to
+//       stay aware of potential changes to $pun_user inbetween of the
+//       hooks the addon listens to
 
 class addon_verysimpleantibot extends flux_addon
 {
@@ -34,41 +37,51 @@ class addon_verysimpleantibot extends flux_addon
 
 	//register to all hooks the addon is interested in
 	//function is auto-called by the addon-system during boostrapping
-    function register($manager)
-    {
-        if ($this->is_configured())
-        {
-			//hook into the registration process
-            $manager->bind('register_before_header', array($this, 'hook_register_before_header'));
-            $manager->bind('register_before_submit', array($this, 'hook_register_before_submit'));
-            $manager->bind('register_before_validation', array($this, 'hook_register_before_validation'));
+	function register($manager)
+	{
+		if ($this->is_configured())
+		{
 
-			//hook into the posting process
-            $manager->bind('post_before_header', array($this, 'hook_post_before_header'));
-            $manager->bind('post_before_submit', array($this, 'hook_post_before_submit'));
-            $manager->bind('post_before_validation', array($this, 'hook_post_before_validation'));
+			if ($this->have_to_check_user("registration"))
+			{
+				//hook into the registration process
+				$manager->bind('register_before_header', array($this, 'hook_register_before_header'));
+				$manager->bind('register_before_submit', array($this, 'hook_register_before_submit'));
+				$manager->bind('register_before_validation', array($this, 'hook_register_before_validation'));
+			}
 
-			//hook into the (quick)-posting process
-			//for now we just reuse the same code of the posting_process
-			//but without "header", as we do not modify the required_fields
-            $manager->bind('quickpost_before_submit', array($this, 'hook_post_before_submit'));
-            $manager->bind('quickpost_before_validation', array($this, 'hook_post_before_validation'));
-        }
-    }
+			if ($this->have_to_check_user("posting"))
+			{
+				//hook into the posting process
+				$manager->bind('post_before_header', array($this, 'hook_post_before_header'));
+				$manager->bind('post_before_submit', array($this, 'hook_post_before_submit'));
+				$manager->bind('post_before_validation', array($this, 'hook_post_before_validation'));
+
+				//hook into the (quick-) posting process
+				//for now we just reuse the same code of the posting_process
+				//but without "header", as we do not modify the required_fields
+				$manager->bind('quickpost_before_submit', array($this, 'hook_post_before_submit'));
+				$manager->bind('quickpost_before_validation', array($this, 'hook_post_before_validation'));
+			}
+		}
+	}
 
 	//check if all needed configuration values are available
-    function is_configured()
-    {
-        global $pun_config;
-        return !empty($pun_config['vsab_enabled']) && !empty($pun_config['vsab_enabled_postings']);
-    }
+	function is_configured()
+	{
+		global $pun_config;
+		if (empty($pun_config['vsab_enabled'])) return false;
+		if (empty($pun_config['vsab_enabled_postings'])) return false;
+		if (empty($pun_config['vsab_salt'])) return false;
+		return true;
+	}
 
 
 	// === POSTING HOOKS ===
 
 	//append the captcha as required field
-    function hook_post_before_header()
-    {
+	function hook_post_before_header()
+	{
 		if (!$this->have_to_check_user('posting'))
 			return;
 
@@ -231,7 +244,7 @@ class addon_verysimpleantibot extends flux_addon
 			//choose random question index and generate hash
 			$this->chosen_question_index = rand(0, count($addon_vsab_questions)-1);
 			$this->chosen_question = $questions[$this->chosen_question_index];
-			$this->chosen_question_hash = md5($questions[$this->chosen_question_index]);
+			$this->chosen_question_hash = $this->create_hash($questions[$this->chosen_question_index]);
 			return true;
 		}
 		//no questions available
@@ -256,7 +269,7 @@ class addon_verysimpleantibot extends flux_addon
 			return true;
 
 		foreach ($addon_vsab_questions as $key=>$value)
-			if (md5($key) == $question_hash)
+			if ($this->create_hash($key) == $question_hash)
 				if ($value == $question_answer)
 					return true;
 				else
@@ -266,6 +279,16 @@ class addon_verysimpleantibot extends flux_addon
 		return false;
 	}
 
+	//return a salted hash for the given text
+	//the salt contains the current day, so if the hash is created
+	//a bit before midnight and validated later on, it will FAIL!
+	//But using this avoids having a constant hash for requests with
+	//the same text. 
+	function create_hash($text)
+	{
+		global $pun_config, $pun_user;
+		return md5($text . date('dmY') . $pun_config['vsab_salt']);
+	}
 
 	//prints out the html code containing the captcha/question markup
 	function output_captcha_box($action = '')
@@ -308,17 +331,38 @@ class addon_verysimpleantibot extends flux_addon
 	{
 		global $pun_config, $pun_user;
 
-
         //addon disabled
 		if ($pun_config['vsab_enabled']=='no') return false;
 
-		if ($action == 'posting')
+		switch($action)
 		{
-			//addon disabled for postings
-			if ($pun_config['vsab_enabled_postings']=='no') return false;
-			//addon enabled for postings but user is a member
-			if ($pun_config['vsab_enabled_postings']=='yes' && !$pun_user['is_guest']) return;
+			case 'posting' :
+				//validation of postings distinguishes between guests
+				//and members - and not validating at all
+				switch($pun_config['vsab_enabled_postings'])
+				{
+					//addon disabled for postings
+					case 'no' :
+						return false;
+
+					//everyone has to get validated?
+					case 'yes_for_all' :
+						return true;
+
+					//only guests have to get validated?
+					case 'yes_for_guests' :
+						return ($pun_user['is_guest'] == true);
+
+					default :
+						return true;
+				}
+
+			case 'registration' :
+				//only check guests
+				return ($pun_user['is_guest'] == true);
+
+			default:
+				return true;
 		}
-		return true;
 	}
 }

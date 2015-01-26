@@ -20,6 +20,10 @@ $lang_addon_admin_vsab = array(
   'AP description' => 'Adjust the settings according to your needs.',
   'Enabled' => 'Enabled',
   'Enabled for postings' => 'Enabled for postings',
+  'Yes for all' => 'Yes for all',
+  'Yes for guests' => 'Yes for guests',
+  'Encryption salt' => 'Encryption salt',
+  'Leave empty to autogenerate a new salt' => 'Leave empty to autogenerate a new salt',
 );
 
 
