@@ -365,11 +365,12 @@ class addon_verysimpleantibot extends flux_addon
 
 					//everyone has to get validated?
 					case 'yes_for_all' :
-						return true;
+						//everyone ... except moderators and admins
+						return !$pun_user['is_admmod'];
 
 					//only guests have to get validated?
 					case 'yes_for_guests' :
-						return ($pun_user['is_guest'] == true);
+						return $pun_user['is_guest'];
 
 					default :
 						return true;
@@ -377,7 +378,7 @@ class addon_verysimpleantibot extends flux_addon
 
 			case 'registration' :
 				//only check guests
-				return ($pun_user['is_guest'] == true);
+				return $pun_user['is_guest'];
 
 			default:
 				return true;
