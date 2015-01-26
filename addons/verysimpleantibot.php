@@ -77,6 +77,7 @@ class addon_verysimpleantibot extends flux_addon
 		if (empty($pun_config['vsab_enabled'])) return false;
 		if (empty($pun_config['vsab_enabled_postings'])) return false;
 		if (empty($pun_config['vsab_salt'])) return false;
+		if (empty($pun_config['vsab_minimum_posts_to_skip'])) return false;
 		return true;
 	}
 
@@ -366,7 +367,16 @@ class addon_verysimpleantibot extends flux_addon
 					//everyone has to get validated?
 					case 'yes_for_all' :
 						//everyone ... except moderators and admins
-						return !$pun_user['is_admmod'];
+						if($pun_user['is_admmod']) return false;
+
+						//could members skip validation if they reached
+						//a specific post count?
+						if ($pun_config['vsab_minimum_posts_to_skip'] > 0))
+							if ($pun_user['num_posts'] >= $pun_config['vsab_minimum_posts_to_skip'])
+								return false;
+								
+						//in all other cases: validate the user
+						return true;
 
 					//only guests have to get validated?
 					case 'yes_for_guests' :

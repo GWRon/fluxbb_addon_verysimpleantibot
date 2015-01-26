@@ -39,6 +39,7 @@ if (isset($_POST['process_form']))
     $conf['enabled'] = isset($_POST['vsab_enabled']) ? pun_trim($_POST['vsab_enabled']) : "no";
     $conf['enabled_postings'] = isset($_POST['vsab_enabled_postings']) ? pun_trim($_POST['vsab_enabled_postings']) : "no";
     $conf['salt'] = isset($_POST['vsab_salt']) ? pun_trim($_POST['vsab_salt']) : "";
+    $conf['minimum_posts_to_skip'] = isset($_POST['vsab_minimum_posts_to_skip']) ? intval($_POST['vsab_minimum_posts_to_skip']) : 0;
 
 	//repair salt if empty one was provided
 	if($conf['salt'] == "") $conf['salt'] = uniqid();
@@ -75,6 +76,7 @@ generate_admin_menu($plugin);
 // set default configuration
 if(!isset($pun_config['vsab_enabled'])) $pun_config['vsab_enabled'] = 'no';
 if(!isset($pun_config['vsab_enabled_postings'])) $pun_config['vsab_enabled_postings'] = 'no';
+if(!isset($pun_config['minimum_posts_to_skip'])) $pun_config['minimum_posts_to_skip'] = 0;
 
 ?>
 
@@ -89,8 +91,8 @@ if(!isset($pun_config['vsab_enabled_postings'])) $pun_config['vsab_enabled_posti
                         <p><?php echo $lang_addon_admin_vsab['AP description'] ?></p>
                         <table class="aligntop" cellspacing="0">
                             <tr>
-                                <th scope="row"><?php echo $lang_addon_admin_vsab['Enabled'] ?></th>
-                                <td>
+                                <th scope="row" style="vertical-align:top;"><?php echo $lang_addon_admin_vsab['Enabled'] ?></th>
+                                <td style="width:60%;vertical-align:top;">
 									<select name="vsab_enabled">
 										<option value="yes" <?php if ($pun_config['vsab_enabled'] == 'yes') echo "selected"; ?>><?php echo $lang_admin_common['Yes'] ?></option>
 										<option value="no" <?php if ($pun_config['vsab_enabled'] != 'yes') echo "selected"; ?>><?php echo $lang_admin_common['No'] ?></option>
@@ -98,8 +100,8 @@ if(!isset($pun_config['vsab_enabled_postings'])) $pun_config['vsab_enabled_posti
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php echo $lang_addon_admin_vsab['Enabled for postings'] ?></th>
-                                <td style="width:75%;">
+                                <th scope="row" style="vertical-align:top;"><?php echo $lang_addon_admin_vsab['Enabled for postings'] ?></th>
+                                <td style="vertical-align:top;">
 									<select name="vsab_enabled_postings">
 										<option value="yes_for_all" <?php if ($pun_config['vsab_enabled_postings'] == 'yes_for_all') echo "selected"; ?>><?php echo $lang_addon_admin_vsab['Yes for all'] ?></option>
 										<option value="yes_for_guests" <?php if ($pun_config['vsab_enabled_postings'] == 'yes_for_guests') echo "selected"; ?>><?php echo $lang_addon_admin_vsab['Yes for guests'] ?></option>
@@ -108,8 +110,16 @@ if(!isset($pun_config['vsab_enabled_postings'])) $pun_config['vsab_enabled_posti
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php echo $lang_addon_admin_vsab['Encryption salt'] ?></th>
-                                <td>
+                                <th scope="row" style="vertical-align:top;"><?php echo $lang_addon_admin_vsab['Member minimum post count'] ?></th>
+                                <td style="vertical-align:top;">
+                                    <input type="text" name="vsab_minimum_posts_to_skip" size="10" value="<?php echo intval($pun_config['vsab_minimum_posts_to_skip']); ?>" />
+                                    <br /><i><?php echo $lang_addon_admin_vsab['minimum post count hint 1'] ?></i>
+                                    <br /><i><?php echo $lang_addon_admin_vsab['minimum post count hint 2'] ?></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" style="vertical-align:top;"><?php echo $lang_addon_admin_vsab['Encryption salt'] ?></th>
+                                <td style="vertical-align:top;">
                                     <input type="text" name="vsab_salt" size="40" value="<?php if (!empty($pun_config['vsab_salt'])) echo pun_htmlspecialchars($pun_config['vsab_salt']); ?>" />
                                     <br /><i><?php echo $lang_addon_admin_vsab['Leave empty to autogenerate a new salt'] ?></i>
                                 </td>

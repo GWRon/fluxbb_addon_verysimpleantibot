@@ -22,6 +22,9 @@ $lang_addon_admin_vsab = array(
   'Enabled for postings' => 'Enabled for postings',
   'Yes for all' => 'Yes for all',
   'Yes for guests' => 'Yes for guests',
+  'Member minimum post count' => 'Member minimum post count',
+  'minimum post count hint 1' => 'Leave empty or at zero to validate user regardless of their post count',
+  'minimum post count hint 2' => '<strong>enabled for postings</strong> needs to be set to \'Yes for all\' to make this option active',
   'Encryption salt' => 'Encryption salt',
   'Leave empty to autogenerate a new salt' => 'Leave empty to autogenerate a new salt',
 );

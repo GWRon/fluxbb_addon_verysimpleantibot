@@ -22,6 +22,9 @@ $lang_addon_admin_vsab = array(
   'Enabled for postings' => 'Für Beiträge aktiviert',
   'Yes for all' => 'Ja für Alle',
   'Yes for guests' => 'Ja für Gäste',
+  'Member minimum post count' => 'Mindestbeitragszähler für Mitglieder',
+  'minimum post count hint 1' => 'Freilassen oder 0-setzen um Mitglieder unabhängig ihres Beitragszählers zu überprüfen',
+  'minimum post count hint 2' => '<strong>Für Beiträge aktiviert</strong> muss auf "Ja für Alle" gesetzt sein, um diesen Modus zu aktivieren',
   'Encryption salt' => 'Verschlüsselungs-Code',
   'Leave empty to autogenerate a new salt' => 'Freilassen um einen neuen Code generieren zu lassen',
 );
