@@ -31,7 +31,6 @@
 class addon_verysimpleantibot extends flux_addon
 {
 	public $language_file_loaded = false;
-	public $chosen_question_index = -1;
 	public $chosen_question_hash = "";
 	public $chosen_question = "";
 
@@ -208,16 +207,7 @@ class addon_verysimpleantibot extends flux_addon
 
 		$this->language_file_loaded = true;
 	}
-
-	//return the index of the currently chosen question
-	//selects a question if not done yet
-	function get_chosen_question_index()
-	{
-		if ($this->chosen_question_index < 0)
-			do_choose_question();
-		return $this->chosen_question_index;
-	}
-
+	
 	//return the hash of the currently chosen question
 	//selects a question if not done yet
 	function get_chosen_question_hash()
@@ -250,9 +240,8 @@ class addon_verysimpleantibot extends flux_addon
 			//load in the questions of the question=>answer array
 			$questions = array_keys($addon_vsab_questions);
 			//choose random question index and generate hash
-			$this->chosen_question_index = rand(0, count($addon_vsab_questions)-1);
-			$this->chosen_question = $questions[$this->chosen_question_index];
-			$this->chosen_question_hash = $this->create_hash($questions[$this->chosen_question_index]);
+			$this->chosen_question = $questions[ rand(0, count($questions)-1) ];
+			$this->chosen_question_hash = $this->create_hash($this->chosen_question);
 			return true;
 		}
 		//no questions available

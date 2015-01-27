@@ -76,7 +76,7 @@ generate_admin_menu($plugin);
 // set default configuration
 if(!isset($pun_config['vsab_enabled'])) $pun_config['vsab_enabled'] = 'no';
 if(!isset($pun_config['vsab_enabled_postings'])) $pun_config['vsab_enabled_postings'] = 'no';
-if(!isset($pun_config['minimum_posts_to_skip'])) $pun_config['minimum_posts_to_skip'] = 0;
+if(!isset($pun_config['vsab_minimum_posts_to_skip'])) $pun_config['vsab_minimum_posts_to_skip'] = 0;
 
 ?>
 
