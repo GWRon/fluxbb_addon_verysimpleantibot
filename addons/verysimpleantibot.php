@@ -237,10 +237,9 @@ class addon_verysimpleantibot extends flux_addon
 		global $addon_vsab_questions;
 		if(isset($addon_vsab_questions) && count($addon_vsab_questions) > 0)
 		{
-			//load in the questions of the question=>answer array
-			$questions = array_keys($addon_vsab_questions);
-			//choose random question index and generate hash
-			$this->chosen_question = $questions[ rand(0, count($questions)-1) ];
+			//choose random question from "question=>answer" array and
+			//generate a hash of it
+			$this->chosen_question = array_rand($addon_vsab_questions);
 			$this->chosen_question_hash = $this->create_hash($this->chosen_question);
 			return true;
 		}
